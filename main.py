@@ -9,6 +9,9 @@ from game import Game
 pygame.display.set_caption("Mon premier Jeu")
 screen = pygame.display.set_mode((1080,720)) #Renvoie une surface
 
+# On défini le framerate
+clock = pygame.time.Clock()
+
 # On importe le background
 background = pygame.image.load(("./assests/bg.jpg"))
 
@@ -29,8 +32,15 @@ while running:
     for projectile in game.player.all_projectiles:
         projectile.move()
 
+    # On récupère tous les monstres pour les bouger
+    for monster in game.all_monsters:
+        monster.forward()
+
     # On applique l'ensemble des images du groupe du projectile
     game.player.all_projectiles.draw(screen)
+
+    # On applique l'ensemble des images du groupe monstres
+    game.all_monsters.draw(screen)
 
     # On vérifie si la touche est appuyée
     if game.pressed.get(pygame.K_d) and game.player.rect.x + game.player.rect.width < screen.get_width():
@@ -40,6 +50,9 @@ while running:
 
     # On met à jour l'écran
     pygame.display.flip()
+
+    # On applique le 60 fps
+    clock.tick(60)
 
     for event in pygame.event.get():
 

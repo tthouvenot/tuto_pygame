@@ -4,14 +4,16 @@ from projectile import Projectile
 # On créé la classe du joueur. Elle hérite de la classe Sprite du module sprite de pygame
 class Player(pygame.sprite.Sprite):
 
-    def __init__(self):
+    # On passe l'instance du jeu en paramètre pour l'avoir en attribut
+    def __init__(self, game):
         # On initialise la classe parent
         super().__init__()
+        self.game = game
         # On définie les attributs
-        self.health = 100
-        self.max_health = 100
+        self.health = 100 # Points de vie actuel
+        self.max_health = 100 # Points de vie initial
         self.attack = 10
-        self.velocity = 0.5
+        self.velocity = 5
         # On crée un groupe de projectile
         self.all_projectiles = pygame.sprite.Group()
         # On définie le sprite qui représente le joueur
@@ -30,8 +32,10 @@ class Player(pygame.sprite.Sprite):
 
     # On crée les méthode de déplacement
     def move_right(self):
-        self.position_x += self.velocity
-        self.rect.x = int(self.position_x)
+        # On peut se déplacer que si le joueur n'entre pas en collision avec un monstre
+        if not self.game.check_collision(self, self.game.all_monsters):
+            self.position_x += self.velocity
+            self.rect.x = int(self.position_x)
     def move_left(self):
         self.position_x -= self.velocity
         self.rect.x = int(self.position_x)
