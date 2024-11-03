@@ -25,6 +25,17 @@ class Player(pygame.sprite.Sprite):
         # Permet d'avoir une vélocity inférieur à 1
         self.position_x = float(self.rect.x)
 
+    def damage(self, amount):
+        
+        if self.health - amount > amount:
+            self.health -= amount
+
+    def update_health_bar(self, surface):
+
+        # On dessine les barres de vie (surface, couleur, position). Attention la position a son importance 
+        pygame.draw.rect(surface, (60,63,60), [self.rect.x + 50, self.rect.y + 20, self.max_health, 5])
+        pygame.draw.rect(surface, (111,210,46), [self.rect.x + 50, self.rect.y + 20, self.health, 5])
+
     # On défini la méthode de lancement de la boule de feu
     def launch_projectile(self):
         # On crée l'instance du projectile et on l'ajoute au groupe. On passe en argument le joueur lui même

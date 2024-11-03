@@ -20,6 +20,7 @@ class Game:
         self.all_monsters = pygame.sprite.Group()
         # Au démarrage on fait spanw immédiatement le monstre
         self.spawn_monster()
+        self.spawn_monster()
 
     # On va gérer les collisions
     def check_collision(self, sprite, group):

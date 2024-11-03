@@ -25,6 +25,9 @@ while running:
     # Applique l'arrière plan du jeu (image, (positionX les abscisses , positionY les ordonnées)). IMPORTANT: le point d'origine (0,0) est en haut à gauche
     screen.blit(background, (0,-200))
 
+    # On actualise la barre de jeu du joueur
+    game.player.update_health_bar(screen)
+
     # On applique l'image du joueur
     screen.blit(game.player.image, game.player.rect)
 
@@ -35,6 +38,7 @@ while running:
     # On récupère tous les monstres pour les bouger
     for monster in game.all_monsters:
         monster.forward()
+        monster.update_health_bar(screen)
 
     # On applique l'ensemble des images du groupe du projectile
     game.player.all_projectiles.draw(screen)
