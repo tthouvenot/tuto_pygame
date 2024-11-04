@@ -29,6 +29,9 @@ class Player(pygame.sprite.Sprite):
         
         if self.health - amount > amount:
             self.health -= amount
+        else:
+            #Si le joueur n'a plus de point de vie
+            self.game.game_over()
 
     def update_health_bar(self, surface):
 
