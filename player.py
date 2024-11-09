@@ -1,13 +1,14 @@
 import pygame
 from projectile import Projectile
+import animation
 
 # On créé la classe du joueur. Elle hérite de la classe Sprite du module sprite de pygame
-class Player(pygame.sprite.Sprite):
+class Player(animation.AnimateSprite):
 
     # On passe l'instance du jeu en paramètre pour l'avoir en attribut
     def __init__(self, game):
         # On initialise la classe parent
-        super().__init__()
+        super().__init__("player")
         self.game = game
         # On définie les attributs
         self.health = 100 # Points de vie actuel
@@ -16,8 +17,6 @@ class Player(pygame.sprite.Sprite):
         self.velocity = 5
         # On crée un groupe de projectile
         self.all_projectiles = pygame.sprite.Group()
-        # On définie le sprite qui représente le joueur
-        self.image = pygame.image.load("./assests/player.png")
         # On génère et stock la représentation rectangulaire du joueur
         self.rect = self.image.get_rect()
         self.rect.x = 400
@@ -33,6 +32,9 @@ class Player(pygame.sprite.Sprite):
             #Si le joueur n'a plus de point de vie
             self.game.game_over()
 
+    def update_animation(self):
+        self.animate()
+    
     def update_health_bar(self, surface):
 
         # On dessine les barres de vie (surface, couleur, position). Attention la position a son importance 
@@ -43,6 +45,7 @@ class Player(pygame.sprite.Sprite):
     def launch_projectile(self):
         # On crée l'instance du projectile et on l'ajoute au groupe. On passe en argument le joueur lui même
         self.all_projectiles.add(Projectile(self))
+        self.start_animation()
 
     # On crée les méthode de déplacement
     def move_right(self):

@@ -55,6 +55,7 @@ class Game:
         for monster in self.all_monsters:
             monster.forward()
             monster.update_health_bar(screen)
+            monster.update_animation()
         
         # On récupère toutes les comètes pour les bouger
         for comet in self.comet_event.all_comets:
@@ -68,6 +69,9 @@ class Game:
 
         # On applique l'ensemble des images du groupe comète
         self.comet_event.all_comets.draw(screen)
+
+        # On actualise l'animation du joueur
+        self.player.update_animation()
 
         # On vérifie si la touche est appuyée
         if self.pressed.get(pygame.K_d) and self.player.rect.x + self.player.rect.width < screen.get_width():
