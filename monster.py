@@ -28,6 +28,13 @@ class Monster(pygame.sprite.Sprite):
             self.health = self.max_health
             self.velocity = random.randint(1,3)
 
+        # Si la barre d'évènement est chargée au max
+        if self.game.comet_event.is_full_loaded():
+            self.game.all_monsters.remove(self)
+
+            # On appel la méthode pour déclancher la pluie de comète
+            self.game.comet_event.attempt_fall()
+
     def update_health_bar(self, surface):
 
         # On dessine les barres de vie (surface, couleur, position). Attention la position a son importance 

@@ -3,6 +3,8 @@ import pygame
 from player import Player
 # On importe le monstre
 from monster import Monster
+# On importe les évènement des comets
+from comet_event import CometFallEvent
 
 # On crée la classe qui représente le jeu
 class Game:
@@ -20,6 +22,8 @@ class Game:
         self.pressed = {}
         # On crée un groupe de monstre
         self.all_monsters = pygame.sprite.Group()
+        # On génère l'évènement des comets
+        self.comet_event = CometFallEvent(self)
       
 
     # On va gérer les collisions
@@ -37,6 +41,9 @@ class Game:
         # On actualise la barre de jeu du joueur
         self.player.update_health_bar(screen)
 
+        # On actualise la barre d'évènement du jeu
+        self.comet_event.update_bar(screen)
+
         # On applique l'image du joueur
         screen.blit(self.player.image, self.player.rect)
 
@@ -48,12 +55,19 @@ class Game:
         for monster in self.all_monsters:
             monster.forward()
             monster.update_health_bar(screen)
+        
+        # On récupère toutes les comètes pour les bouger
+        for comet in self.comet_event.all_comets:
+            comet.fall()
 
         # On applique l'ensemble des images du groupe du projectile
         self.player.all_projectiles.draw(screen)
 
         # On applique l'ensemble des images du groupe monstres
         self.all_monsters.draw(screen)
+
+        # On applique l'ensemble des images du groupe comète
+        self.comet_event.all_comets.draw(screen)
 
         # On vérifie si la touche est appuyée
         if self.pressed.get(pygame.K_d) and self.player.rect.x + self.player.rect.width < screen.get_width():
@@ -66,6 +80,8 @@ class Game:
         # On remet le jeu à neuf, on retire les monstres, remettre le joueur à 100 de vie et le jeu en attente
         self.all_monsters = pygame.sprite.Group()
         self.player.health = self.player.max_health
+        self.comet_event.all_comets = pygame.sprite.Group()
+        self.comet_event.reset_percent()
         self.is_playing = False
 
     def start(self):
