@@ -46,6 +46,7 @@ class Player(animation.AnimateSprite):
         # On crée l'instance du projectile et on l'ajoute au groupe. On passe en argument le joueur lui même
         self.all_projectiles.add(Projectile(self))
         self.start_animation()
+        self.game.sound_manager.play('tir')
 
     # On crée les méthode de déplacement
     def move_right(self):

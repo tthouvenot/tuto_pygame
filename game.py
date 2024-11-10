@@ -5,11 +5,14 @@ from player import Player
 from monster import Monster, Mummy, Alien
 # On importe les évènement des comets
 from comet_event import CometFallEvent
+from sounds import SoundManager
 
 # On crée la classe qui représente le jeu
 class Game:
 
     def __init__(self):
+        # On défini le son
+        self.sound_manager = SoundManager()
         # Défini si le jeu a commencé ou pas
         self.is_playing = False
         # On crée le groupe de sprite représentant le joueur
@@ -24,6 +27,9 @@ class Game:
         self.all_monsters = pygame.sprite.Group()
         # On génère l'évènement des comets
         self.comet_event = CometFallEvent(self)
+        self.font = pygame.font.Font("./assests/fonts/SourGummy-Bold.ttf", 25)
+        # On met le score à 0
+        self.score = 0
       
 
     # On va gérer les collisions
@@ -37,6 +43,11 @@ class Game:
 
     # On crée la méthode de mise à jour des composants
     def update(self, screen):
+
+        # On affiche le score sur l'écran
+        score_text = self.font.render(f"Score: {self.score}", 1, (240,240,240))
+        screen.blit(score_text, (20, 20))
+
         # On actualise la barre de jeu du joueur
         self.player.update_health_bar(screen)
 
@@ -86,6 +97,8 @@ class Game:
         self.comet_event.all_comets = pygame.sprite.Group()
         self.comet_event.reset_percent()
         self.is_playing = False
+        self.score = 0
+        self.sound_manager.play('game_over')
 
     def start(self):
         self.is_playing = True
@@ -93,3 +106,6 @@ class Game:
         self.spawn_monster(Mummy)
         self.spawn_monster(Mummy)
         self.spawn_monster(Alien)
+
+    def add_score(self, points=10):
+        self.score += points

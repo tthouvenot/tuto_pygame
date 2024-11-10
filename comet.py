@@ -18,6 +18,8 @@ class Comet(pygame.sprite.Sprite):
     #  Permet de gérer la chute de la comète
     def fall(self):
         self.rect.y += self.velocity
+        # on joue le son
+        self.comet_event.game.sound_manager.play('meteorite')
 
         # ne tombe pas sur le sol, si c'est le cas on la détruit
         if self.rect.y >= 500:

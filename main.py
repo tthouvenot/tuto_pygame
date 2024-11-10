@@ -42,7 +42,7 @@ while running:
     # On vérifie si le jeu a commencé
     if game.is_playing:
         # On déclenche les instructions de la partie
-        game.update(screen)
+        game.update(screen)    
     # On vérifie si le jeu n'a pas commencé
     else:
         # On ajoute l'écran de bienvenue
@@ -68,7 +68,10 @@ while running:
 
             # On détecte si la touche espace est appuyée
             if event.key == pygame.K_SPACE:
-                game.player.launch_projectile()
+                if game.is_playing:
+                    game.player.launch_projectile()
+                else:
+                    game.start()
 
         elif event.type == pygame.KEYUP:
             game.pressed[event.key] = False
@@ -78,3 +81,5 @@ while running:
             if play_button_rect.collidepoint(event.pos):
                 # On met le jeu en mode lancer
                 game.start()
+                # jouer le son
+                game.sound_manager.play('click')
