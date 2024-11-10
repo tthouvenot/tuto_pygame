@@ -42,5 +42,4 @@ class Comet(pygame.sprite.Sprite):
             # On remet la barre à 0
             self.comet_event.reset_percent()
             # On fait apparaître les monstres
-            self.comet_event.game.spawn_monster()
-            self.comet_event.game.spawn_monster()
+            self.comet_event.game.start()

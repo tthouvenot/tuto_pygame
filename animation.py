@@ -5,9 +5,11 @@ import random
 
 class AnimateSprite(pygame.sprite.Sprite):
 
-    def __init__(self, sprite_name):
+    def __init__(self, sprite_name, size = (200,200)):
         super().__init__()
+        self.size = size
         self.image = pygame.image.load(f"./assests/{sprite_name}.png")
+        self.image = pygame.transform.scale(self.image, size)
         # attribut pour savoir sur quelle image on est
         self.current_image = 0 # on commence à l'image 0
         self.images = animations.get(sprite_name)
@@ -40,6 +42,7 @@ class AnimateSprite(pygame.sprite.Sprite):
 
             # on modifie l'image de l'animation précédente par la suivante
             self.image = self.images[self.current_image]
+            self.image = pygame.transform.scale(self.image, self.size)
 
 # on défini une fonction pour charger les images d'un sprite
 def load_animation_images(sprite_name):
@@ -61,5 +64,6 @@ def load_animation_images(sprite_name):
 # mummy -> [...mummy1.png,...]
 animations = {
     'mummy': load_animation_images("mummy"),
-    'player': load_animation_images("player")
+    'player': load_animation_images("player"),
+    'alien': load_animation_images("alien")
 }

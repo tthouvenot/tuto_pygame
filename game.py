@@ -2,7 +2,7 @@ import pygame
 # On importe la classe player
 from player import Player
 # On importe le monstre
-from monster import Monster
+from monster import Monster, Mummy, Alien
 # On importe les évènement des comets
 from comet_event import CometFallEvent
 
@@ -32,9 +32,8 @@ class Game:
         return pygame.sprite.spritecollide(sprite, group, False, pygame.sprite.collide_mask)
 
     # On crée une méthode pour faire spawn les monstres
-    def spawn_monster(self):
-        monster = Monster(self)
-        self.all_monsters.add(monster)
+    def spawn_monster(self, monster_class_name):
+        self.all_monsters.add(monster_class_name.__call__(self)) # __call__() est une méthode qui permet d'instancier un objet
 
     # On crée la méthode de mise à jour des composants
     def update(self, screen):
@@ -91,5 +90,6 @@ class Game:
     def start(self):
         self.is_playing = True
           # Au démarrage on fait spanw immédiatement le monstre
-        self.spawn_monster()
-        self.spawn_monster()
+        self.spawn_monster(Mummy)
+        self.spawn_monster(Mummy)
+        self.spawn_monster(Alien)

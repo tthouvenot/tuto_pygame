@@ -4,18 +4,22 @@ import animation
 
 class Monster(animation.AnimateSprite):
 
-    def __init__(self, game):
-        super().__init__('mummy')
+    def __init__(self, game, name, size, offset=0):
+        super().__init__(name, size)
         self.game = game
         self.health = 100
         self.max_health = 100
         self.attack = 0.3
-        self.velocity = random.randint(1,3)
         self.rect = self.image.get_rect()
         self.rect.x = 1000 + random.randint(0, 300)
-        self.rect.y = 540
+        self.rect.y = 540 - offset
         self.position_x = float(self.rect.x)
         self.start_animation()
+
+    def set_speed(self, speed):
+        self.default_speed = speed
+        self.velocity = random.randint(1,3)
+        
 
     def damage(self, amount):
         # on inflige des dégâts
@@ -27,7 +31,7 @@ class Monster(animation.AnimateSprite):
             self.rect.x = 1000 + random.randint(0, 300)
             self.position_x = float(self.rect.x)
             self.health = self.max_health
-            self.velocity = random.randint(1,3)
+            self.velocity = random.randint(1,self.default_speed)
 
         # Si la barre d'évènement est chargée au max
         if self.game.comet_event.is_full_loaded():
@@ -54,3 +58,20 @@ class Monster(animation.AnimateSprite):
         else:
             # On inflige des dégâts
             self.game.player.damage(self.attack)
+
+# on définit une classe pour la momie
+class Mummy(Monster):
+
+    def __init__(self, game):
+        super().__init__(game, "mummy", (130, 130))
+        self.set_speed(3)
+
+# On définit une classe pour l'alien
+class Alien(Monster):
+
+    def __init__(self, game):
+        super().__init__(game, "alien", (300,300), 130)
+        self.health = 250
+        self.max_health = 250
+        self.set_speed(1)
+        self.attack = 0.8
